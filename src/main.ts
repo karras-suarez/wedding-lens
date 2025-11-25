@@ -20,7 +20,8 @@ import { bootstrapCameraKit } from "@snap/camera-kit";
       import.meta.env.VITE_LENS_ID,
       import.meta.env.VITE_LENS_GROUP_ID
     );
-    
     await session.applyLens(lens);
+    console.log("loaded lens", lens);
+
 })();
 
