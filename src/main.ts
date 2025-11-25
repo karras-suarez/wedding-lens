@@ -1,16 +1,26 @@
-import "./style.css";
-import typescriptLogo from "./typescript.svg";
-import viteLogo from "/vite.svg";
-import "./lens.js";
+import { bootstrapCameraKit } from "@snap/camera-kit";
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-  </div>
-`;
+
+(async function setupLens() {
+    const apiToken = import.meta.env.VITE_SNAP_API;
+    const cameraKit = await bootstrapCameraKit({ apiToken, logger: 'console' });
+    console.log("bootstrappedCameraKit", cameraKit);
+    const liveRenderTarget = document.getElementById('canvas') as HTMLCanvasElement;
+    liveRenderTarget.style.height = window.innerHeight + 'px';
+    const session = await cameraKit.createSession({ liveRenderTarget });
+
+    const mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+
+    await session.setSource(mediaStream);
+    await session.play();
+
+    const lens = await cameraKit.lensRepository.loadLens(
+      import.meta.env.VITE_LENS_ID,
+      import.meta.env.VITE_LENS_GROUP_ID
+    );
+    
+    await session.applyLens(lens);
+})();
+
