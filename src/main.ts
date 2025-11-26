@@ -10,7 +10,7 @@ import { bootstrapCameraKit, createMediaStreamSource } from "@snap/camera-kit";
     const session = await cameraKit.createSession({ liveRenderTarget });
 
     const mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: true,
+      video: { facingMode: 'environment' }, 
     });
 
     const source = createMediaStreamSource(mediaStream, {
