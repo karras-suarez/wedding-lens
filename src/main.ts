@@ -1,4 +1,4 @@
-import { bootstrapCameraKit } from "@snap/camera-kit";
+import { bootstrapCameraKit, createMediaStreamSource } from "@snap/camera-kit";
 
 
 (async function setupLens() {
@@ -13,7 +13,12 @@ import { bootstrapCameraKit } from "@snap/camera-kit";
       video: true,
     });
 
-    await session.setSource(mediaStream);
+    const source = createMediaStreamSource(mediaStream, {
+      cameraType: 'environment',
+    });
+
+
+    await session.setSource(source);
     await session.play();
 
     const lens = await cameraKit.lensRepository.loadLens(
