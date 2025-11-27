@@ -6,7 +6,7 @@ import { bootstrapCameraKit, createMediaStreamSource } from "@snap/camera-kit";
     const cameraKit = await bootstrapCameraKit({ apiToken, logger: 'console' });
     console.log("bootstrappedCameraKit", cameraKit);
     const liveRenderTarget = document.getElementById('canvas') as HTMLCanvasElement;
-    liveRenderTarget.style.height = window.innerHeight + 'px';
+    // liveRenderTarget.style.height = window.innerHeight + 'px';
     const session = await cameraKit.createSession({ liveRenderTarget });
 
     const mediaStream = await navigator.mediaDevices.getUserMedia({
