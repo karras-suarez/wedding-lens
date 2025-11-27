@@ -13,10 +13,17 @@ import { bootstrapCameraKit, createMediaStreamSource } from "@snap/camera-kit";
       video: { facingMode: 'environment',width: { ideal: 1280 },
       height: { ideal: 720 }, }, 
     });
+    
 
     const source = createMediaStreamSource(mediaStream, {
       cameraType: 'environment',
     });
+    setTimeout(() => {
+      const track = mediaStream.getVideoTracks()[0];
+      const { width, height } = track.getSettings();
+    
+      source.setRenderSize(width || window.innerWidth, height || window.innerHeight);
+    }, 100);
 
 
     await session.setSource(source);
